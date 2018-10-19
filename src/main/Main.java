@@ -1,0 +1,22 @@
+package main;
+
+import Business.TranslateBusiness;
+import Business.TranslateBusiness2;
+import Business.TranslateBusiness3;
+
+public class Main {
+
+	//private static TranslateBusiness2 translateBusiness = new TranslateBusiness2();
+	private static TranslateBusiness3 translateBusiness = new TranslateBusiness3();
+
+	// 翻译入口
+	public static void main(String[] args) throws Exception {
+
+		String fromFile = "C:\\Users\\Administrator\\Desktop\\工作\\翻译\\src.txt";
+		String toFile = "C:\\Users\\Administrator\\Desktop\\工作\\翻译\\result.txt";
+		
+		translateBusiness.translateFromFileToFile(fromFile, toFile, "en", "zh");
+		
+	}
+
+}

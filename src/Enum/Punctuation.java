@@ -5,24 +5,22 @@ import java.util.List;
 
 import com.alibaba.fastjson.JSONObject;
 
-import po.Language;
 import po.Language2;
-import util.StringUtil;
 
 public enum Punctuation {
 
-	// ÷–Œƒ«¯
-	DOU_CHINESE("£¨", "CHINESE", false, null, true, 1, false), JU_CHINESE("°£", "CHINESE", false, null, true, 2,
-			true), WEN_CHINESE("£ø", "CHINESE", false, null, true, 3, true), TAN_CHINESE("£°", "CHINESE", false, null,
-					true, 4, true), DUN_CHINESE("°¢", "CHINESE", false, null, false, null, false), ZHONGHENGXIAN_CHINESE(
-							"®C", "CHINESE", false, null, false, null,
+	// ‰∏≠ÊñáÂå∫
+	DOU_CHINESE("Ôºå", "CHINESE", false, null, true, 1, false), JU_CHINESE("„ÄÇ", "CHINESE", false, null, true, 2,
+			true), WEN_CHINESE("Ôºü", "CHINESE", false, null, true, 3, true), TAN_CHINESE("ÔºÅ", "CHINESE", false, null,
+					true, 4, true), DUN_CHINESE("„ÄÅ", "CHINESE", false, null, false, null, false), ZHONGHENGXIAN_CHINESE(
+							"‚Äì", "CHINESE", false, null, false, null,
 							false), DAKUOHAO_CHINESE("{", "CHINESE", true, "}", true, 5, false), ZHONGKUOHAO_CHINESE(
-									"°æ", "CHINESE", true, "°ø", true, 6, false), XIAOKUOHAO_CHINESE("£®", "CHINESE", true,
-											"£©", true, 7, false), JIANKUOHAO_CHINESE("°∂", "CHINESE", true, "°∑", true, 8,
-													false), YINHAO_DAN_CHINESE("°Æ", "CHINESE", true, "°Ø", true, 9,
-															false), YINHAO_SHUANG_CHINESE("°∞", "CHINESE", true, "°±",
+									"„Äê", "CHINESE", true, "„Äë", true, 6, false), XIAOKUOHAO_CHINESE("Ôºà", "CHINESE", true,
+											"Ôºâ", true, 7, false), JIANKUOHAO_CHINESE("„Ää", "CHINESE", true, "„Äã", true, 8,
+													false), YINHAO_DAN_CHINESE("‚Äò", "CHINESE", true, "‚Äô", true, 9,
+															false), YINHAO_SHUANG_CHINESE("‚Äú", "CHINESE", true, "‚Äù",
 																	true, 10, false),
-																	// ”¢Œƒ«¯
+	// Ëã±ÊñáÂå∫
 																	DOU_ENGLISH(",", "ENGLISH", false, null, true, 1,
 																			false), JU_ENGLISH(".", "ENGLISH", false,
 																					null, true, 2,
@@ -148,7 +146,7 @@ public enum Punctuation {
 			for (Punctuation punctuation : all) {
 				String symbol = punctuation.getSymbol();
 				
-				if(symbol.equals("®C")){
+				if (symbol.equals("‚Äì")) {
 					System.out.println();
 				}
 				

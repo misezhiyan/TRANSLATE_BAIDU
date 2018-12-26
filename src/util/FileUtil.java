@@ -30,7 +30,7 @@ public class FileUtil {
 		
 		File file = new File(fileRealPath);
 		if (!file.exists())
-			throw new Exception("Œƒº˛≤ª¥Ê‘⁄");
+			throw new Exception("Êñá‰ª∂‰∏çÂ≠òÂú®");
 
 		Long filelength = file.length();
 		byte[] filecontent = new byte[filelength.intValue()];
@@ -73,13 +73,13 @@ public class FileUtil {
 	}
 
 	/*
-	 * ***** // ±‡¬Î∏Ò ΩŒ Ã‚ private static boolean writeIntoFile(String fileRealPath,
+	 * ***** // ÁºñÁ†ÅÊ†ºÂºèÈóÆÈ¢ò private static boolean writeIntoFile(String fileRealPath,
 	 * String content) throws Exception { if (empty(fileRealPath)) throw new
 	 * Exception("can not be null");
 	 * 
 	 * File file = new File(fileRealPath); if (!file.exists()) {
-	 * file.createNewFile(); } FileWriter fileWriter = new FileWriter(file); try {
-	 * fileWriter.write(content); fileWriter.flush(); } catch (Exception e) {
+	 * file.createNewFile(); } FileWriter fileWriter = new FileWriter(file); try
+	 * { fileWriter.write(content); fileWriter.flush(); } catch (Exception e) {
 	 * e.printStackTrace(); } finally { fileWriter.close(); }
 	 * 
 	 * return true; }

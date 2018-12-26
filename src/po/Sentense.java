@@ -22,7 +22,7 @@ public class Sentense {
 	}
 
 //	private void analyzeSentense(String sentense) {
-//		// »ñÈ¡±ÕºÏÓò, ²¢ÅĞ¶Ï±ÕºÏÓòÊÇ·ñĞèÒª·­Òë
+	// // è·å–é—­åˆåŸŸ, å¹¶åˆ¤æ–­é—­åˆåŸŸæ˜¯å¦éœ€è¦ç¿»è¯‘
 //		
 //	}
 	

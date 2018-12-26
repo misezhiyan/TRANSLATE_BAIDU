@@ -6,7 +6,6 @@ import java.util.List;
 import com.alibaba.fastjson.JSONObject;
 
 import Enum.Punctuation;
-import util.StringUtil;
 
 public class Paragraph {
 
@@ -55,10 +54,10 @@ public class Paragraph {
 
 	private CloseSpace[] splitToSpace(String paragraph) throws Exception {
 
-		// 1. »ñÈ¡±ÕºÏÇøÓò Ôİ¶¨Ö»ÓĞÒ»²ã
-		// 2. È¡±ÕºÏÇøÓòºÍ·Ç±ÕºÏÇøÓòÇø¼ä
-		// 3. ·Ç±ÕºÏÇøÓò¶Ï¾ä
-		// 4. ±ÕºÏÇøÓòÔİ²»¶Ï¾ä
+		// 1. è·å–é—­åˆåŒºåŸŸ æš‚å®šåªæœ‰ä¸€å±‚
+		// 2. å–é—­åˆåŒºåŸŸå’Œéé—­åˆåŒºåŸŸåŒºé—´
+		// 3. éé—­åˆåŒºåŸŸæ–­å¥
+		// 4. é—­åˆåŒºåŸŸæš‚ä¸æ–­å¥
 		List<JSONObject> puntuationsByCanClose_symbol_close = Punctuation.getPunctuationsByCanClose_symbol_close(from);
 		List<CloseSpace> spaceList = new ArrayList<CloseSpace>();
 
@@ -70,7 +69,7 @@ public class Paragraph {
 
 			String close = puntuation.getString("close");
 			if (!paragraph.contains(close))
-				throw new Exception("Î´±ÕºÏ");
+				throw new Exception("æœªé—­åˆ");
 
 			int index_symbol = paragraph.indexOf(symbol);
 			int index_close = paragraph.indexOf(close);

@@ -40,15 +40,15 @@ public final class PUCTUATION {
 }
 
 class SINGLE {
-	private static final String[] CHINESE_MATCH = new String[] { "£¨", "°£", "£ø", "£°", "£∫" };
+	private static final String[] CHINESE_MATCH = new String[] { "Ôºå", "„ÄÇ", "Ôºü", "ÔºÅ", "Ôºö" };
 	private static final String[] ENGLISH_MATCH = new String[] { ",", ".", "?", "!", ":", };
-	private static final String[] CHINESE_ONLY = new String[] { "°¢" };
+	private static final String[] CHINESE_ONLY = new String[] { "„ÄÅ" };
 	private static final String[] ENGLISH_ONLY = new String[] {};
 }
 
 class DOUBLE {
-	private static final String[][] CHINESE_MATCH = { { "{", "}" }, { "°æ", "°ø" }, { "°∂", "°∑" }, { "£®", "£©" },
-			{ "°∞", "°±" }, { "°Æ", "°Ø" } };
+	private static final String[][] CHINESE_MATCH = { { "{", "}" }, { "„Äê", "„Äë" }, { "„Ää", "„Äã" }, { "Ôºà", "Ôºâ" },
+			{ "‚Äú", "‚Äù" }, { "‚Äò", "‚Äô" } };
 	private static final String[][] ENGLISH_MATCH = { { "{", "}" }, { "[", "]" }, { "<", ">" }, { "(", ")" },
 			{ "\"", "\"" }, { "'", "'" } };
 
@@ -72,8 +72,8 @@ class DOUBLE {
 		return 0;
 	}
 
-	private int judgeClosePosition(int deep, Map<String, List<Integer>> judgeClose) {// deep «…Ó»Î≤„ ˝,
-		// ¥”0ø™ º
+	private int judgeClosePosition(int deep, Map<String, List<Integer>> judgeClose) {// deepÊòØÊ∑±ÂÖ•Â±ÇÊï∞,
+		// ‰ªé0ÂºÄÂßã
 
 		List<Integer> situations_start = judgeClose.get("situations_start");
 		List<Integer> situations_close = judgeClose.get("situations_close");
@@ -124,6 +124,6 @@ class DOUBLE {
 			if (CHINESE[0].equals(match))
 				return CHINESE[1];
 		}
-		throw new Exception("√ª”–∆•≈‰µΩ∂‘”¶∑˚∫≈:" + match);
+		throw new Exception("Ê≤°ÊúâÂåπÈÖçÂà∞ÂØπÂ∫îÁ¨¶Âè∑:" + match);
 	}
 }

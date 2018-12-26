@@ -12,7 +12,7 @@ public class CloseSpace {
 	private String from = null;
 	private String to = null;
 
-	private boolean isCloseSpace;// ±ÕºÏÓò²»·­Òë
+	private boolean isCloseSpace;// é—­åˆåŸŸä¸ç¿»è¯‘
 
 	private int sequence;
 	private List<Sentense> sentenseList;
@@ -50,7 +50,7 @@ public class CloseSpace {
 	}
 
 	private List<Sentense> splitToSentense(String space) throws Exception {
-		// ±ÕºÏÓò
+		// é—­åˆåŸŸ
 		if (isCloseSpace) {
 			List<Sentense> sentenseList = new ArrayList<Sentense>();
 			Sentense sentense = new Sentense();
@@ -62,7 +62,7 @@ public class CloseSpace {
 		List<String> puntuationsSentenseSplit_symbol = Punctuation.getPunctuationsSentenseSplit_symbol(from);
 		List<JSONObject> sentenseSplit = new ArrayList<JSONObject>();
 
-		// ¶Ï¾äµãÎ»ÖÃ
+		// æ–­å¥ç‚¹ä½ç½®
 		boolean needSplit = false;
 		for (String symbol : puntuationsSentenseSplit_symbol) {
 
@@ -77,7 +77,7 @@ public class CloseSpace {
 			sentenseSplit.add(json);
 			needSplit = true;
 		}
-		// Ã»ÓĞ¶Ï¾äµã
+		// æ²¡æœ‰æ–­å¥ç‚¹
 		if (!needSplit) {
 			List<Sentense> sentenseList = new ArrayList<Sentense>();
 

@@ -4,6 +4,8 @@ import util.StringUtil;
 
 public class Content {
 
+	private String content = "";
+
 	private String from = null;
 	private String to = null;
 
@@ -50,7 +52,8 @@ public class Content {
 			Paragraph paragraph = new Paragraph();
 			String paragraph_str = paragraphs[i];
 
-			//if("".equals(paragraph_str))continue;
+			if ("".equals(paragraph_str))
+				continue;
 			
 			paragraph.setFrom(from);
 			paragraph.setTo(to);

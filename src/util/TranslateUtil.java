@@ -1,16 +1,10 @@
 package util;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.httpclient.HttpException;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -25,71 +19,44 @@ public class TranslateUtil {
 	private static Integer LIMIT_CHINESE = 2000;
 	private static Integer LIMIT_ENGLISH = 6000;
 
-	// ÓïÑÔ¼òĞ´ Ãû³Æ
-	// auto ×Ô¶¯¼ì²â
-	// zh ÖĞÎÄ
-	// en Ó¢Óï
-	// yue ÔÁÓï
-	// wyw ÎÄÑÔÎÄ
-	// jp ÈÕÓï
-	// kor º«Óï
-	// fra ·¨Óï
-	// spa Î÷°àÑÀÓï
-	// th Ì©Óï
-	// ara °¢À­²®Óï
-	// ru ¶íÓï
-	// pt ÆÏÌÑÑÀÓï
-	// de µÂÓï
-	// it Òâ´óÀûÓï
+	// è¯­è¨€ç®€å†™ åç§°
+	// auto è‡ªåŠ¨æ£€æµ‹
+	// zh ä¸­æ–‡
+	// en è‹±è¯­
+	// yue ç²¤è¯­
+	// wyw æ–‡è¨€æ–‡
+	// jp æ—¥è¯­
+	// kor éŸ©è¯­
+	// fra æ³•è¯­
+	// spa è¥¿ç­ç‰™è¯­
+	// th æ³°è¯­
+	// ara é˜¿æ‹‰ä¼¯è¯­
+	// ru ä¿„è¯­
+	// pt è‘¡è„ç‰™è¯­
+	// de å¾·è¯­
+	// it æ„å¤§åˆ©è¯­
 
-	// Çë½«µ¥´ÎÇëÇó³¤¶È¿ØÖÆÔÚ 6000 bytesÒÔÄÚ¡££¨ºº×ÖÔ¼Îª2000¸ö£©
-
+	// è¯·å°†å•æ¬¡è¯·æ±‚é•¿åº¦æ§åˆ¶åœ¨ 6000 bytesä»¥å†…ã€‚ï¼ˆæ±‰å­—çº¦ä¸º2000ä¸ªï¼‰
 	public static void main(String[] args) throws Exception {
 
 		// Scanner sn = new Scanner(System.in);
 		// String query = sn.nextLine();
 		// sn.close();
-		// String query = "this is a test(ÕâÊÇ¸ö²âÊÔ).\r\ngive you some coler to see
+		// String query = "this is a test(è¿™æ˜¯ä¸ªæµ‹è¯•).\r\ngive you some coler to see
 		// see";
 
 		String query = "";
 		query += "We have sent our feedbacks through emails to Diana Tang and Yuan Hongyu respectively when the China market first announced that the LSS and PCS would be combined. But these two people did not do any investigation. It is not until we sent the emails again to Duan Xiaoying  CEO in China, and the Legal Department that did some of the related investigations begin. Not unnaturally, we didn't receive the results that we expected. We have a feeling that Diana Tang and Yuan Hongyu were hiding back from this situation, or in other words, in China, we need a strong social relationship and money to have problems solved. True or not, your people know.";
 
 		System.out.println(query);
-		List<String> translateresult = translate2(query, "en", "zh");
+		// ç™¾åº¦ç¿»è¯‘
+		List<String> translateresult = BaiDu(query, "en", "zh");
 		for (String result : translateresult)
 			System.out.println(result);
 	}
 
-	// Ä¬ÈÏ ÖĞÎÄ ×ªÓ¢ÎÄ
-	public static String translate(String query) throws Exception {
-		return translate(query, FROM, TO);
-	}
-
-	public static String translate(String query, String from, String to) throws Exception {
-
-		String q = query;
-
-		Random random = new Random();
-		int salt_int = random.nextInt();
-		String salt = String.valueOf(salt_int);
-
-		String sign_source = APPID + q + salt_int + P;
-		String sign = DigestUtils.md5Hex(sign_source);
-
-		q = URLEncoder.encode(q, "UTF-8");
-		String result_url = TRANSLATE_URL + "?" + "q=" + q + "&from=" + from + "&to=" + to + "&appid=" + APPID
-				+ "&salt=" + salt + "&sign=" + sign;
-
-		String result = HttpUtil.htmlGetWithCookie(result_url, null);
-
-		List<String> transelated_result = analyzeResult(result, q);
-		return transelated_result.get(0);
-
-		// return result;
-	}
-
-	public static List<String> translate2(String query, String from, String to) throws Exception {
+	// ç™¾åº¦ç¿»è¯‘
+	public static List<String> BaiDu(String query, String from, String to) throws Exception {
 
 		String q = query;
 		if ("".equals(q)) {
@@ -98,28 +65,16 @@ public class TranslateUtil {
 			return resultList;
 		}
 
-		//q = q.replace("¨C", "");
-
 		Integer salt_int = (int) ((Math.random() * 100) / 1);
 		String salt = String.valueOf(salt_int);
-
-		// q = q.replace(" ", "");
-		// q = q.replace(" ", "");
-		// while(q.contains("\r\n\r\n"))
-		// q = q.replace("\r\n\r\n", "\r\n");
-
-		//q = "Dear Sir/Ma'm,\r\n" + "Good Morning/Afternoon/Evening!\r\n" + "\r\n" + "\r\n" + "\r\n";//"Dear Sir/Ma¡¯m,\r\n" + 
-//		q = "";
 		
 		String sign_source = APPID + q + salt_int + P;
 		String sign = DigestUtils.md5Hex(sign_source);
-		// getÇëÇó
-		// q = URLEncoder.encode(q, "UTF-8");
+		// getè¯·æ±‚
 		String result_url = TRANSLATE_URL + "?" + "q=" + q + "&from=" + from + "&to=" + to + "&appid=" + APPID
 				+ "&salt=" + salt + "&sign=" + sign;
 
-		String result = HttpUtil.postWithParams(result_url);
-		// String result = HttpUtil.htmlGetWithCookie(result_url, null);
+		String result = HttpUtil.postByGetUrl(result_url);
 
 		List<String> transelated_result = analyzeResult(result, q);
 		return transelated_result;
@@ -134,11 +89,9 @@ public class TranslateUtil {
 		if (null != error_code) {
 			switch (error_code) {
 			case "54001":
-				throw new Exception("Ç©Ãû´íÎó");
+				throw new Exception("ç­¾åé”™è¯¯");
 			}
 		}
-
-		// https://md5jiami.51240.com/web_system/51240_com_www/system/file/md5jiami/data/?ajaxtimestamp=1526896718823
 
 		JSONArray jsonArray = json.getJSONArray("trans_result");
 
@@ -152,7 +105,6 @@ public class TranslateUtil {
 		}
 
 		return resultList;
-
 	}
 
 	public static Integer getLimitNum(String language) throws Exception {
@@ -164,7 +116,7 @@ public class TranslateUtil {
 			return LIMIT_CHINESE;
 		}
 
-		throw new Exception("Ã»ÓĞÆ¥ÅäÀàĞÍ");
+		throw new Exception("æ²¡æœ‰åŒ¹é…ç±»å‹");
 	}
 
 }

@@ -10,7 +10,7 @@ public class PatternUtil {
 	private static String REGEX_ENGLISH = "[A-Za-z]";
 	
 	public static void main(String[] args) {
-		char a = '’≈';
+		char a = 'Âº†';
 		a = 'a';
 		a = ',';
 		boolean matchChinese = matchChinese(a);

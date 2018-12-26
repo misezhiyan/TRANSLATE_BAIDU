@@ -1,19 +1,20 @@
 package po;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.alibaba.fastjson.JSONObject;
 
+import Enum.Punctuation;
 import util.PatternUtil;
-import util.StringUtil;
 import util.TranslateUtil;
 
 public class Language {
 
 	public static final String CHINESE = "CHINESE";
 	public static final String ENGLISH = "ENGLISH";
+	public static final Integer LIMIT_CHINESE = 2000;
+	public static final Integer LIMIT_ENGLISH = 6000;
 
 	private static String lastLanguage = "lan";
 	private static String currentLanguage = "lan";
@@ -23,10 +24,10 @@ public class Language {
 
 	private static List<JSONObject> analyzeSentence(String content) throws Exception {
 
-		// »»ĞĞ±àÂë, ±ÜÃâ¶à¸ö·µ»ØÖµ
+		// æ¢è¡Œç¼–ç , é¿å…å¤šä¸ªè¿”å›å€¼
 		// content = encodeReturnFlag(content);
 
-		// ²»Í¬ÓïÑÔ·ÖÇø
+		// ä¸åŒè¯­è¨€åˆ†åŒº
 		int start = 0;
 		int length = content.length();
 		for (int i = 0; i < length; i++) {
@@ -66,7 +67,7 @@ public class Language {
 			languageChanged = false;
 			return;
 		}
-		language = matchLan(language);
+		language = toFormmatLan(language);
 		if (!language.equals(currentLanguage)) {
 			languageChanged = true;
 			lastLanguage = currentLanguage;
@@ -77,28 +78,8 @@ public class Language {
 
 	}
 
-	public static String translate(List<String> sentence_list, String from, String to) throws Exception {
-		String transResult_sentense = "";
 
-		for (String sentence : sentence_list) {
-			analyzeSentence(sentence);
-			String trans_lan = matchLan(from);
-			for (JSONObject sentenseJson : list) {
-				String lan = sentenseJson.getString("lan");
-				String sentence_temp = sentenseJson.getString("content");
-				if (lan.equals(trans_lan)) {
-					String trans_result = TranslateUtil.translate(sentence_temp, from, to);
-					transResult_sentense += trans_result;
-				} else {
-					transResult_sentense += sentence_temp;
-				}
-			}
-		}
-
-		return transResult_sentense;
-	}
-
-	private static String matchLan(String lan) throws Exception {
+	public static String toCommonLan(String lan) throws Exception {
 
 		switch (lan) {
 		case CHINESE:
@@ -112,76 +93,58 @@ public class Language {
 		case "lan":
 			return "lan";
 		}
-		throw new Exception("Ã»ÓĞÆ¥Åäµ½ÓïÑÔÀàĞÍ");
+		throw new Exception("æ²¡æœ‰åŒ¹é…åˆ°è¯­è¨€ç±»å‹");
 	}
 
-	public static String translate1(String content, String from, String to) throws Exception {
-		
-		// ·Ö¶Î
-		List<String> paragraph_list = fenkai(content, "\r\n");
-		// List<JSONObject> needToTranslateList = new ArrayList<JSONObject>();
-		String neetToTranslate = "";
-		// ÓÃÓÚÏŞÖÆ×ÖÊı
-		Integer length_limit = TranslateUtil.getLimitNum(from);
+	public static String toFormmatLan(String lan) throws Exception {
 
-		List<String> needToTranslateLimit = new ArrayList<String>();
-		int count = 1;
-		for (String paragraph : paragraph_list) {
-			init();
-			analyzeSentence(paragraph);
-			String trans_lan = matchLan(from);
-			for (JSONObject contentJson : list) {
-				String lan = contentJson.getString("lan");
-				String content_temp = contentJson.getString("content");
-				if (lan.equals(trans_lan)) {
-					// needToTranslateList.add(contentJson);
-					if ((neetToTranslate + content_temp).length() >= length_limit) {
-						if (1 == count)
-							throw new Exception("³öÏÖ¾ø¶Ô´íÎó, ÇëÁªÏµ¿ª·¢Õß:15092250419");
-						needToTranslateLimit.add(neetToTranslate);
-						neetToTranslate = content_temp;
-						count = 1;
-						continue;
-					}
-					neetToTranslate += content_temp + "\\n";
-					count++;
-				} else {
+		switch (lan) {
+		case "zh":
+			return CHINESE;
+		case "en":
+			return ENGLISH;
+		case "lan":
+			return "lan";
+		}
+		throw new Exception("æ²¡æœ‰åŒ¹é…åˆ°è¯­è¨€ç±»å‹");
+	}
 
-				}
+	public static String translate(String contentNeed, String from, String to) throws Exception {
+
+		Content content = new Content();
+		content.setFrom(from);
+		content.setTo(to);
+		content.setContent(contentNeed);
+
+		String content2 = content.getContent();
+		String content_trans = content.getContent_trans();
+
+		System.out.println(content_trans.length());
+		List<String> limitNum = limitNum(content_trans, from);
+		// List<String> exchangePuctuation = exchangePuctuation(limitNum, from);
+		String lan = from;
+		switch (from) {
+		case "en":
+			lan = ENGLISH;
+			break;
+		case "zh":
+			lan = CHINESE;
+			break;
+		}
+		List<String> exchangePuctuation = Punctuation.exchangePuctuation(limitNum, lan);
+
+		for (String src : exchangePuctuation) {
+			System.out.println("åŸæ–‡");
+			System.out.println(src);
+
+			List<String> resultList = TranslateUtil.BaiDu(src, from, to);
+			for (String str : resultList) {
+				System.out.println("è¯‘æ–‡");
+				System.out.println(str);
 			}
-			if(!StringUtil.isEmpty(neetToTranslate))neetToTranslate = neetToTranslate.substring(0, neetToTranslate.length() - 3);
-			needToTranslateLimit.add(neetToTranslate);
-			neetToTranslate = "";
 		}
 
-		List<String> trans_result = new ArrayList<String>();
-		for (String will_translate : needToTranslateLimit) {
-			List<String> trans_result_temp = TranslateUtil.translate2(will_translate, from, to);
-			trans_result.addAll(trans_result_temp);
-		}
-
-		String translate_content = "";
-		int num = 0;
-		for (String paragraph : paragraph_list) {
-			init();
-			analyzeSentence(paragraph);
-			String trans_lan = matchLan(from);
-			for (JSONObject contentJson : list) {
-				String lan = contentJson.getString("lan");
-				// String content_temp = contentJson.getString("content");
-				// Integer start = contentJson.getInteger("start");
-				// Integer end = contentJson.getInteger("end");
-				if (lan.equals(trans_lan)) {
-					translate_content += trans_result.get(num);
-					num++;
-				} else {
-					translate_content += paragraph;
-				}
-			}
-			translate_content += "\r\n";
-		}
-
-		return translate_content;
+		return null;
 	}
 
 	private static void init() {
@@ -191,16 +154,6 @@ public class Language {
 		languageChanged = false;
 		list = new ArrayList<JSONObject>();
 	}
-
-	// private static String decodeReturnFlag(String content) {
-	//
-	// return content.replace("@#$%^&&~`", "\\r\\n");
-	// }
-	//
-	// private static String encodeReturnFlag(String content) {
-	//
-	// return content.replace("\r\n", "@#$%^&&~`");
-	// }
 
 	private static List<String> fenkai(String content, String splitFlag) {
 
@@ -222,6 +175,60 @@ public class Language {
 		}
 
 		return result;
+	}
+
+	private static List<String> limitNum(String content, String from) throws Exception {
+
+		int limit = -1;
+
+		switch (from) {
+		case "en":
+			limit = LIMIT_ENGLISH;
+			break;
+		case ENGLISH:
+			limit = LIMIT_ENGLISH;
+			break;
+		case "zh":
+			limit = LIMIT_CHINESE;
+			break;
+		case CHINESE:
+			limit = LIMIT_CHINESE;
+			break;
+		}
+
+		if (limit < 0)
+			throw new Exception("æœªåŒ¹é…åˆ°è¯­è¨€");
+
+		List<String> resultList = new ArrayList<String>();
+		if (content.length() < limit) {
+			resultList.add(content);
+			return resultList;
+		}
+
+		// ä¸­æ–‡ 2000 å­— (å¸¦ç©ºæ ¼å’Œæ ‡ç‚¹)
+		// è‹±æ–‡ 6000å­—(å¸¦ç©ºæ ¼å’Œæ ‡ç‚¹)
+		if (!content.contains("\r\n"))
+			throw new Exception("å•å¥è¶…è¿‡å­—æ•°é™åˆ¶");
+
+		String first = "";
+		String second = "";
+
+		int index = content.indexOf("\r\n");
+		index += 4;
+
+		if (index + 1 > limit)
+			throw new Exception("å•å¥è¶…è¿‡å­—æ•°é™åˆ¶");
+
+		first = content.substring(0, index + 1);
+		second = content.substring(index + 1);
+
+		if (second.length() > limit) {
+			resultList.add(first);
+			List<String> resList = limitNum(second, from);
+			resultList.addAll(resList);
+		}
+
+		return resultList;
 	}
 
 }
